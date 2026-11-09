@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQL Learning Intelligence Dashboard</title>
+<style>
+:root{--bg:#f4f6fb;--panel:#fff;--ink:#182238;--muted:#66738a;--line:#e5e9f1;--accent:#465de6;--accent2:#13a58b;--orange:#e89a36;--red:#d65b68;--shadow:0 8px 28px rgba(25,40,75,.07)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:9px;padding:9px 13px;background:var(--accent);color:#fff;font-weight:650}button.secondary{background:#eef1ff;color:#3449c5}button.ghost{background:#f1f3f7;color:#354158}button.danger{background:#fff0f1;color:#b83e4b}
+.app{display:grid;grid-template-columns:245px 1fr;min-height:100vh}.sidebar{background:#17223a;color:#eaf0ff;padding:24px 16px;display:flex;flex-direction:column;gap:22px}.brand{font-size:17px;font-weight:800;letter-spacing:.2px;padding:0 10px}.brand small{display:block;color:#aebbd6;font-size:11px;font-weight:500;margin-top:3px}.nav{display:grid;gap:6px}.nav button{background:transparent;color:#b9c5df;text-align:left;padding:11px 12px;font-weight:600}.nav button.active,.nav button:hover{background:#2a3858;color:white}.side-note{margin-top:auto;border:1px solid #394765;border-radius:12px;padding:13px;color:#b9c5df;font-size:12px}.main{min-width:0}.topbar{height:70px;background:rgba(255,255,255,.9);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:5;backdrop-filter:blur(12px)}.topbar strong{font-size:16px}.top-actions{display:flex;gap:8px}.content{padding:28px 30px 50px;max-width:1500px;margin:auto}.page{display:none}.page.active{display:block}.eyebrow{text-transform:uppercase;letter-spacing:1.2px;font-size:10px;color:var(--muted);font-weight:800}.heading{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:20px}.heading h1{font-size:26px;line-height:1.2;margin:5px 0}.heading p{margin:6px 0 0;color:var(--muted)}.grid{display:grid;gap:16px}.kpis{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:17px}.card{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:18px;box-shadow:var(--shadow);min-width:0}.kpi-label{color:var(--muted);font-size:12px;font-weight:650}.kpi-value{font-size:29px;font-weight:800;margin:5px 0 1px;letter-spacing:-.8px}.kpi-foot{font-size:11px;color:var(--muted)}.two{grid-template-columns:1.25fr .75fr}.three{grid-template-columns:repeat(3,1fr)}.card h3{font-size:15px;margin:0 0 13px}.muted{color:var(--muted)}.progress{height:9px;background:#edf0f6;border-radius:99px;overflow:hidden}.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#8290ff);border-radius:99px}.phase-row{display:grid;grid-template-columns:35px 1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}.phase-row:last-child{border:0}.phase-num{width:30px;height:30px;border-radius:9px;background:#eef1ff;color:#465de6;display:grid;place-items:center;font-weight:800}.phase-title{font-weight:700}.phase-sub{font-size:11px;color:var(--muted)}.pill{display:inline-block;padding:4px 8px;border-radius:99px;font-size:10px;font-weight:750;background:#eef1ff;color:#4655b5}.pill.done{background:#e4f7f1;color:#087d66}.pill.progressing{background:#fff3df;color:#9b6413}.pill.hard{background:#ffebee;color:#b34452}.bars{display:grid;gap:12px}.barline{display:grid;grid-template-columns:100px 1fr 35px;align-items:center;gap:9px;font-size:12px}.barline .progress{height:8px}.activity{display:grid;gap:9px}.activity-item{display:flex;justify-content:space-between;gap:10px;font-size:12px;padding-bottom:9px;border-bottom:1px solid var(--line)}.activity-item:last-child{border:0}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px;background:white}table{width:100%;border-collapse:collapse;min-width:780px}th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);font-size:12px}th{background:#f8f9fc;color:#59667e;font-size:10px;text-transform:uppercase;letter-spacing:.6px;position:sticky;top:0}tr:last-child td{border:0}td a{color:#4056d8;text-decoration:none;font-weight:700}.filters{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0}.field{border:1px solid var(--line);border-radius:9px;padding:9px 10px;background:white;color:var(--ink);min-width:140px}.field:focus{outline:2px solid #cbd2ff;border-color:#7180ef}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.formgrid label{display:grid;gap:5px;font-size:11px;font-weight:700;color:#58657b}.formgrid .wide{grid-column:1/-1}textarea.field{min-height:75px;resize:vertical}.modal{position:fixed;inset:0;background:#10182a88;display:none;align-items:center;justify-content:center;padding:20px;z-index:20}.modal.open{display:flex}.modal-box{background:white;border-radius:16px;padding:22px;width:min(600px,100%);max-height:90vh;overflow:auto;box-shadow:0 20px 70px #10182a44}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.modal-head h2{margin:0;font-size:18px}.close{background:#f1f3f7;color:#344158;padding:6px 10px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:15px}.empty{padding:28px;text-align:center;color:var(--muted)}.checkline{display:flex;align-items:center;gap:8px;margin:9px 0;font-size:12px}.checkline input{accent-color:var(--accent)}.skill-card{display:grid;gap:8px}.skill-top{display:flex;justify-content:space-between;gap:8px}.skill-top strong{font-size:13px}.skill-top span{font-size:12px;color:var(--muted)}.small{font-size:11px}.notice{background:#fff8e9;border:1px solid #f3dfb4;border-radius:11px;padding:12px;color:#75531d;font-size:12px;margin:0 0 16px}.success{color:#087d66}.footer-note{font-size:11px;color:var(--muted);margin-top:16px}
+@media(max-width:950px){.app{grid-template-columns:1fr}.sidebar{padding:12px;gap:10px}.brand{padding:4px 8px}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap}.side-note{display:none}.kpis{grid-template-columns:repeat(2,1fr)}.two,.three{grid-template-columns:1fr}.content{padding:20px 14px}.topbar{padding:0 15px}}
+@media(max-width:520px){.kpis{grid-template-columns:1fr 1fr}.kpi-value{font-size:23px}.heading{align-items:flex-start;flex-direction:column}.formgrid{grid-template-columns:1fr}.formgrid .wide{grid-column:auto}.topbar{height:60px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand">SQL / LEARNING OS<small>Personal learning intelligence</small></div>
+  <nav class="nav" id="nav">
+    <button class="active" data-page="overview">◫ &nbsp; Overview</button>
+    <button data-page="roadmap">⌘ &nbsp; Roadmap</button>
+    <button data-page="questions">▤ &nbsp; Question bank</button>
+    <button data-page="skills">◎ &nbsp; Skill intelligence</button>
+    <button data-page="journal">✎ &nbsp; Study journal</button>
+    <button data-page="settings">⚙ &nbsp; Data & settings</button>
+  </nav>
+  <div class="side-note"><strong>Teacher's rule</strong><br>Attempt first. Explain your reasoning. Debug the mistake. Re-solve independently.</div>
+</aside>
+<main class="main">
+<header class="topbar"><strong id="pageTitle">Overview</strong><div class="top-actions"><button class="secondary" id="quickLog">＋ Log study</button></div></header>
+<div class="content">
+<section class="page active" id="overview">
+  <div class="heading"><div><div class="eyebrow">Your learning command centre</div><h1>Good learning is measurable.</h1><p>Track SQL practice, concept mastery, consistency and problem-solving confidence.</p></div><span class="pill" id="todayLabel"></span></div>
+  <div class="grid kpis">
+    <div class="card"><div class="kpi-label">Questions solved</div><div class="kpi-value" id="kSolved">0</div><div class="kpi-foot" id="kQuestionFoot">of 310 target slots</div></div>
+    <div class="card"><div class="kpi-label">Roadmap progress</div><div class="kpi-value" id="kRoadmap">0%</div><div class="kpi-foot">Based on phase completion</div></div>
+    <div class="card"><div class="kpi-label">Study time</div><div class="kpi-value" id="kHours">0h</div><div class="kpi-foot">Total logged learning time</div></div>
+    <div class="card"><div class="kpi-label">Current streak</div><div class="kpi-value" id="kStreak">0 days</div><div class="kpi-foot">Consecutive days with study logs</div></div>
+  </div>
+  <div class="grid two">
+    <div class="card"><h3>Roadmap progression</h3><div id="overviewPhases"></div></div>
+    <div class="card"><h3>Difficulty distribution</h3><div class="bars" id="difficultyBars"></div><p class="footer-note">Counts reflect questions you have added to your personal bank, not an assumed complete catalogue.</p></div>
+    <div class="card"><h3>Learning intelligence snapshot</h3><div class="grid three" id="intelligenceMini"></div><p class="footer-note">Self-ratings are learning signals, not an IQ or clinical intelligence measurement.</p></div>
+    <div class="card"><h3>Recent study activity</h3><div class="activity" id="recentActivity"></div></div>
+  </div>
+</section>
+
+<section class="page" id="roadmap">
+  <div class="heading"><div><div class="eyebrow">Concept dependency sequence</div><h1>Roadmap</h1><p>Learn prerequisites first, then increase difficulty. Mark a phase complete only when you can explain and apply it.</p></div><button id="addPhaseTask" class="secondary">＋ Add learning item</button></div>
+  <div class="notice">This is the teacher-designed 10-phase structure. The sample question links are starter examples from our discussion; the full 310-question inventory has not yet been verified or imported.</div>
+  <div class="card" id="phaseList"></div>
+</section>
+
+<section class="page" id="questions">
+  <div class="heading"><div><div class="eyebrow">Personal SQL problem catalogue</div><h1>Question bank</h1><p>Add questions, tag concepts, track attempts and record independent mastery.</p></div><button id="addQuestion">＋ Add question</button></div>
+  <div class="filters"><input class="field" id="qSearch" placeholder="Search ID, title or concept"><select class="field" id="qDiff"><option value="">All difficulties</option><option>Easy</option><option>Medium</option><option>Hard</option></select><select class="field" id="qStatus"><option value="">All statuses</option><option>Not started</option><option>Attempted</option><option>Solved</option><option>Mastered</option></select><select class="field" id="qPhase"><option value="">All phases</option></select></div>
+  <div class="table-wrap"><table><thead><tr><th>ID / Question</th><th>Difficulty</th><th>Phase</th><th>Concepts</th><th>Status</th><th>Attempts</th><th>Confidence</th><th>Action</th></tr></thead><tbody id="questionRows"></tbody></table></div>
+  <p class="footer-note">The bank starts with representative examples only. Use Import CSV/JSON to load a verified complete question list later.</p>
+</section>
+
+<section class="page" id="skills">
+  <div class="heading"><div><div class="eyebrow">Personal intelligence development</div><h1>Skill intelligence</h1><p>Measure practical SQL thinking: reasoning, accuracy, independence, debugging and retention.</p></div><button id="editSkills">Update self-assessment</button></div>
+  <div class="notice">These are practical learning indicators based on your self-assessment and tracked results. They do not measure general intelligence, personality or cognitive ability.</div>
+  <div class="grid two">
+    <div class="card"><h3>Capability radar (self-rated)</h3><div id="skillList" class="grid"></div></div>
+    <div class="card"><h3>What each indicator means</h3><div class="activity">
+      <div class="activity-item"><span><b>Query reasoning</b><br><span class="muted">Can you translate requirements into query steps?</span></span></div>
+      <div class="activity-item"><span><b>SQL accuracy</b><br><span class="muted">Do your results handle edge cases and NULLs?</span></span></div>
+      <div class="activity-item"><span><b>Independence</b><br><span class="muted">Can you solve without hints or copied patterns?</span></span></div>
+      <div class="activity-item"><span><b>Debugging</b><br><span class="muted">Can you locate and explain the cause of an error?</span></span></div>
+      <div class="activity-item"><span><b>Concept retention</b><br><span class="muted">Can you recall and reuse concepts after a delay?</span></span></div>
+      <div class="activity-item"><span><b>Problem decomposition</b><br><span class="muted">Can you break complex tasks into smaller queries?</span></span></div>
+    </div></div>
+  </div>
+  <div class="card" style="margin-top:16px"><h3>Personal development goals</h3><div id="goalList"></div><button class="secondary" id="addGoal">＋ Add goal</button></div>
+</section>
+
+<section class="page" id="journal">
+  <div class="heading"><div><div class="eyebrow">Consistency and reflection</div><h1>Study journal</h1><p>Capture time spent, what you learned, where you struggled and what to revisit.</p></div><button id="newLog">＋ New study log</button></div>
+  <div class="grid two"><div class="card"><h3>Weekly study time</h3><div id="weeklyBars" class="bars"></div></div><div class="card"><h3>Reflection prompts</h3><p class="muted">After each session, answer:</p><ol class="small"><li>What concept did I understand today?</li><li>Where did my reasoning fail?</li><li>Could I solve it again without help?</li><li>What should I revisit next session?</li></ol></div></div>
+  <div class="card" style="margin-top:16px"><h3>Study history</h3><div class="table-wrap"><table><thead><tr><th>Date</th><th>Minutes</th><th>Focus</th><th>Win / learning</th><th>Next action</th></tr></thead><tbody id="journalRows"></tbody></table></div></div>
+</section>
+
+<section class="page" id="settings">
+  <div class="heading"><div><div class="eyebrow">Your data belongs to you</div><h1>Data & settings</h1><p>Export a backup, import your question inventory or reset the local dashboard.</p></div></div>
+  <div class="grid two">
+    <div class="card"><h3>Backup and restore</h3><p class="muted small">Your data is stored in this browser using localStorage. Export regularly to keep a backup or move it to another browser.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button id="exportData">Export backup (JSON)</button><button class="secondary" id="importDataBtn">Import backup (JSON)</button><input type="file" id="importDataFile" accept=".json,application/json" hidden></div></div>
+    <div class="card"><h3>Import question list</h3><p class="muted small">CSV columns supported: id,title,url,difficulty,phase,concepts,status,attempts,confidence. JSON accepts an array of question objects.</p><button id="importQuestionsBtn" class="secondary">Import questions (CSV / JSON)</button><input type="file" id="importQuestionsFile" accept=".csv,.json,text/csv,application/json" hidden></div>
+    <div class="card"><h3>Learning target</h3><label class="small">Question target <input class="field" id="targetInput" type="number" min="1" max="10000" value="310"></label><button id="saveTarget" style="margin-top:10px">Save target</button></div>
+    <div class="card"><h3>Reset dashboard</h3><p class="muted small">This permanently clears locally stored questions, logs, goals and ratings in this browser. Export a backup first.</p><button class="danger" id="resetData">Reset all local data</button></div>
+  </div>
+  <p class="footer-note">No account or server is connected. This prototype does not send your learning data anywhere.</p>
+</section>
+</div>
+</main>
+</div>
+
+<div class="modal" id="modal"><div class="modal-box"><div class="modal-head"><h2 id="modalTitle">Add item</h2><button class="close" id="closeModal">✕</button></div><div id="modalBody"></div><div class="modal-actions"><button class="ghost" id="cancelModal">Cancel</button><button id="saveModal">Save</button></div></div></div>
+<script>
+const PHASES=[
+["SQL fundamentals and query execution","Foundation",["SELECT and column selection","WHERE conditions","AND / OR / NOT","IN, BETWEEN and LIKE","DISTINCT","ORDER BY and LIMIT","SQL execution order","NULL and three-valued logic"]],
+["Conditional logic and expressions","Beginner",["Arithmetic and comparison expressions","CASE WHEN","IF and IFNULL","COALESCE and NULLIF","Boolean expressions","Conditional output columns"]],
+["Relational operations and JOINs","Beginner → Intermediate",["Table relationships","INNER JOIN","LEFT JOIN","RIGHT JOIN","Multiple table joins","CROSS JOIN","SELF JOIN","Anti-joins","Multiple join conditions","Unmatched records"]],
+["Aggregation and grouping","Intermediate",["COUNT, SUM and AVG","MIN and MAX","GROUP BY","HAVING","COUNT(*) vs COUNT(column)","COUNT(DISTINCT)","Conditional aggregation","Aggregation after JOIN","Percentages and weighted averages"]],
+["Date and time analysis","Intermediate",["DATE / DATETIME / TIMESTAMP","YEAR, MONTH and DAY","DATE_FORMAT","DATEDIFF","DATE_ADD and DATE_SUB","Date ranges","First and last event","Consecutive dates","Rolling windows"]],
+["Subqueries and CTEs","Intermediate → Advanced",["Scalar subqueries","Single-row and multi-row subqueries","IN and NOT IN","EXISTS and NOT EXISTS","Correlated subqueries","Nested subqueries","Derived tables","CTEs","Multiple CTEs","Recursive CTE fundamentals"]],
+["Window functions","Advanced",["OVER()","PARTITION BY","Window ORDER BY","ROW_NUMBER","RANK and DENSE_RANK","LAG and LEAD","FIRST_VALUE and LAST_VALUE","Running totals","Moving averages","Top N per group"]],
+["String operations and data cleaning","Intermediate → Advanced",["CONCAT","UPPER and LOWER","LEFT and RIGHT","SUBSTRING","LENGTH and CHAR_LENGTH","TRIM","REPLACE","LIKE and REGEXP","GROUP_CONCAT","Duplicate identification and validation"]],
+["Advanced relational and set operations","Advanced",["UNION and UNION ALL","INTERSECT / EXCEPT alternatives","Relational division","Anti-join patterns","Gaps and islands","Consecutive event patterns","Complex conditional aggregation","Recursive relationships"]],
+["Expert problem-solving and optimization","Advanced / Expert",["EXPLAIN","Index fundamentals","Composite indexes","Index selectivity","SARGable conditions","JOIN optimization","Subquery vs JOIN performance","Window function performance","Query refactoring","Large dataset considerations"]]
+];
+const starter=[
+[1757,"Recyclable and Low Fat Products","Easy",0,"Filtering, boolean conditions"],
+[584,"Find Customer Referee","Easy",0,"WHERE, NULL"],
+[595,"Big Countries","Easy",0,"WHERE, OR"],
+[1148,"Article Views I","Easy",0,"DISTINCT, filtering"],
+[1683,"Invalid Tweets","Easy",0,"LENGTH, filtering"],
+[620,"Not Boring Movies","Easy",1,"MOD, filtering, sorting"],
+[610,"Triangle Judgement","Easy",1,"CASE WHEN"],
+[1378,"Replace Employee ID With The Unique Identifier","Easy",2,"LEFT JOIN"],
+[1581,"Customer Who Visited but Did Not Make Any Transactions","Easy",2,"LEFT JOIN, aggregation"],
+[197,"Rising Temperature","Easy",2,"SELF JOIN, date comparison"],
+[1280,"Students and Examinations","Easy",2,"CROSS JOIN, LEFT JOIN, COUNT"],
+[1934,"Confirmation Rate","Medium",2,"LEFT JOIN, conditional aggregation, NULL"],
+[596,"Classes More Than 5 Students","Easy",3,"GROUP BY, HAVING, COUNT DISTINCT"],
+[1251,"Average Selling Price","Easy",3,"JOIN, SUM, conditional aggregation"],
+[1633,"Percentage of Users Attended a Contest","Easy",3,"COUNT DISTINCT, percentage"],
+[1193,"Monthly Transactions I","Medium",3,"DATE_FORMAT, conditional aggregation"],
+[1141,"User Activity for the Past 30 Days I","Easy",4,"Date filtering, COUNT DISTINCT"],
+[1321,"Restaurant Growth","Hard",4,"Self join, rolling window, aggregation"],
+[176,"Second Highest Salary","Medium",5,"Subquery, MAX"],
+[185,"Department Top Three Salaries","Hard",5,"Window functions, ranking"],
+[1204,"Last Person to Fit in the Bus","Medium",6,"Window SUM, ordering"],
+[1667,"Fix Names in a Table","Easy",7,"String functions"],
+[1045,"Customers Who Bought All Products","Medium",8,"Relational division, aggregation"]
+].map(x=>({id:x[0],title:x[1],difficulty:x[2],phase:x[3],concepts:x[4],url:`https://leetcode.com/problems/${slug(x[1])}/`,status:"Not started",attempts:0,confidence:0,notes:""}));
+function slug(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}
+const defaultSkills=[["Query reasoning",2],["SQL accuracy",2],["Independent solving",1],["Debugging",2],["Concept retention",1],["Problem decomposition",2]];
+let state=load();
+function fresh(){return {target:310,questions:starter,logs:[],skills:defaultSkills.map(([name,value])=>({name,value})),goals:[{title:"Become confident with analytical SQL",done:false},{title:"Solve SQL problems independently",done:false},{title:"Build SQL skills for Data Analyst and Data Engineer roles",done:false}],phaseDone:[],phaseItems:{}}}
+function load(){try{return JSON.parse(localStorage.getItem("sqlLearningOS"))||fresh()}catch(e){return fresh()}}
+function save(){localStorage.setItem("sqlLearningOS",JSON.stringify(state));render()}
+const $=id=>document.getElementById(id);
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function showPage(p){document.querySelectorAll(".page").forEach(x=>x.classList.toggle("active",x.id===p));document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x.dataset.page===p));$("pageTitle").textContent=({overview:"Overview",roadmap:"Roadmap",questions:"Question bank",skills:"Skill intelligence",journal:"Study journal",settings:"Data & settings"})[p]}
+$("nav").addEventListener("click",e=>{let b=e.target.closest("button[data-page]");if(b)showPage(b.dataset.page)});
+function statusPill(s){return `<span class="pill ${s==="Mastered"||s==="Solved"?"done":s==="Attempted"?"progressing":""}">${esc(s)}</span>`}
+function phaseProgress(i){let qs=state.questions.filter(q=>Number(q.phase)===i);let mastered=qs.filter(q=>q.status==="Mastered").length;let tasks=PHASES[i][2];let checked=state.phaseItems[i]||[];let taskPct=tasks.length?checked.length/tasks.length:0;let qPct=qs.length?mastered/qs.length:0;return Math.round((taskPct*.75+qPct*.25)*100)}
+function render(){
+ $("todayLabel").textContent=new Date().toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"});
+ const solved=state.questions.filter(q=>["Solved","Mastered"].includes(q.status)).length;
+ const hours=state.logs.reduce((a,l)=>a+(+l.minutes||0),0)/60;
+ $("kSolved").textContent=solved;$("kQuestionFoot").textContent=`of ${state.target} target slots`;
+ $("kRoadmap").textContent=Math.round(PHASES.reduce((a,_,i)=>a+phaseProgress(i),0)/PHASES.length)+"%";
+ $("kHours").textContent=hours.toFixed(1)+"h";$("kStreak").textContent=streak()+" days";
+ $("overviewPhases").innerHTML=PHASES.map((p,i)=>`<div class="phase-row"><div class="phase-num">${i}</div><div><div class="phase-title">${esc(p[0])}</div><div class="phase-sub">${phaseProgress(i)}% complete · ${p[2].length} learning items</div><div class="progress" style="margin-top:6px"><span style="width:${phaseProgress(i)}%"></span></div></div>${phaseProgress(i)===100?'<span class="pill done">Ready</span>':'<span class="small muted">'+p[1]+'</span>'}</div>`).join("");
+ const counts=["Easy","Medium","Hard"].map(d=>[d,state.questions.filter(q=>q.difficulty===d).length]);
+ $("difficultyBars").innerHTML=counts.map(([d,n])=>`<div class="barline"><span>${d}</span><div class="progress"><span style="width:${state.questions.length?n/state.questions.length*100:0}%"></span></div><b>${n}</b></div>`).join("");
+ $("intelligenceMini").innerHTML=state.skills.slice(0,3).map(s=>`<div><div class="kpi-value">${s.value}/5</div><div class="small muted">${esc(s.name)}</div></div>`).join("");
+ $("recentActivity").innerHTML=state.logs.slice().sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5).map(l=>`<div class="activity-item"><span><b>${esc(l.focus||"Study session")}</b><br><span class="muted">${esc(l.date)}</span></span><b>${+l.minutes||0} min</b></div>`).join("")||'<div class="empty">No study sessions yet. Log your first session.</div>';
+ renderPhases();renderQuestions();renderSkills();renderJournal();
+ $("targetInput").value=state.target;
+}
+function renderPhases(){
+ $("phaseList").innerHTML=PHASES.map((p,i)=>{let checked=state.phaseItems[i]||[];let pc=phaseProgress(i);let related=state.questions.filter(q=>+q.phase===i).length;return `<div style="padding:15px 2px;border-bottom:1px solid var(--line)"><div class="skill-top"><div><span class="pill">PHASE ${i}</span> <strong>${esc(p[0])}</strong><div class="small muted">${p[1]} · ${related} questions currently mapped</div></div><b>${pc}%</b></div><div class="progress" style="margin:10px 0"><span style="width:${pc}%"></span></div><div class="grid two">${p[2].map((t,j)=>`<label class="checkline"><input type="checkbox" data-phase="${i}" data-item="${j}" ${checked.includes(j)?"checked":""}>${esc(t)}</label>`).join("")}</div></div>`}).join("");
+ $("phaseList").querySelectorAll("input").forEach(c=>c.addEventListener("change",()=>{let i=+c.dataset.phase,j=+c.dataset.item;let arr=state.phaseItems[i]||[];state.phaseItems[i]=c.checked?[...new Set([...arr,j])]:arr.filter(x=>x!==j);save()}));
+ $("qPhase").innerHTML='<option value="">All phases</option>'+PHASES.map((p,i)=>`<option value="${i}">Phase ${i}: ${esc(p[0])}</option>`).join("");
+}
+function renderQuestions(){
+ let term=($("qSearch")?.value||"").toLowerCase(),d=$("qDiff")?.value||"",s=$("qStatus")?.value||"",p=$("qPhase")?.value||"";
+ let arr=state.questions.filter(q=>(!term||[q.id,q.title,q.concepts].join(" ").toLowerCase().includes(term))&&(!d||q.difficulty===d)&&(!s||q.status===s)&&(!p||+q.phase===+p));
+ $("questionRows").innerHTML=arr.map(q=>`<tr><td><b>#${esc(q.id)}</b> · <a href="${esc(q.url||"#")}" target="_blank" rel="noopener">${esc(q.title)}</a></td><td>${esc(q.difficulty)}</td><td>${+q.phase}: ${esc(PHASES[+q.phase]?.[0]||"Unassigned")}</td><td>${esc(q.concepts||"—")}</td><td>${statusPill(q.status)}</td><td>${+q.attempts||0}</td><td>${q.confidence||0}/5</td><td><button class="ghost" data-edit="${esc(q.id)}">Edit</button></td></tr>`).join("")||'<tr><td colspan="8" class="empty">No matching questions. Add a question or change filters.</td></tr>';
+ $("questionRows").querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>questionModal(state.questions.find(q=>String(q.id)===b.dataset.edit)));
+}
+function renderSkills(){
+ $("skillList").innerHTML=state.skills.map((s,i)=>`<div class="skill-card"><div class="skill-top"><strong>${esc(s.name)}</strong><span>${s.value}/5</span></div><div class="progress"><span style="width:${s.value*20}%"></span></div></div>`).join("");
+ $("goalList").innerHTML=state.goals.map((g,i)=>`<label class="checkline"><input type="checkbox" data-goal="${i}" ${g.done?"checked":""}>${esc(g.title)}</label>`).join("")||'<p class="muted small">No goals yet.</p>';
+ $("goalList").querySelectorAll("input").forEach(c=>c.onchange=()=>{state.goals[+c.dataset.goal].done=c.checked;save()});
+}
+function renderJournal(){
+ $("journalRows").innerHTML=state.logs.slice().sort((a,b)=>b.date.localeCompare(a.date)).map(l=>`<tr><td>${esc(l.date)}</td><td>${+l.minutes||0}</td><td>${esc(l.focus)}</td><td>${esc(l.win)}</td><td>${esc(l.next)}</td></tr>`).join("")||'<tr><td colspan="5" class="empty">No study logs yet.</td></tr>';
+ const days=[];for(let i=6;i>=0;i--){let dt=new Date();dt.setDate(dt.getDate()-i);let key=dt.toISOString().slice(0,10);days.push({key,label:dt.toLocaleDateString(undefined,{weekday:"short"}),min:state.logs.filter(l=>l.date===key).reduce((a,l)=>a+(+l.minutes||0),0)})}
+ let max=Math.max(60,...days.map(x=>x.min));$("weeklyBars").innerHTML=days.map(x=>`<div class="barline"><span>${x.label}</span><div class="progress"><span style="width:${x.min/max*100}%"></span></div><b>${x.min}m</b></div>`).join("");
+}
+function streak(){let dates=[...new Set(state.logs.map(l=>l.date))].sort().reverse();if(!dates.length)return 0;let today=new Date();today.setHours(0,0,0,0);let key=d=>d.toISOString().slice(0,10);if(dates[0]!==key(today)){today.setDate(today.getDate()-1);if(dates[0]!==key(today))return 0}let n=0;for(let d of dates){if(d===key(today)){n++;today.setDate(today.getDate()-1)}else break}return n}
+const modal=$("modal");let modalSave=()=>{};
+function openModal(title,body,fn){$("modalTitle").textContent=title;$("modalBody").innerHTML=body;modalSave=fn;modal.classList.add("open")}
+function closeModal(){modal.classList.remove("open")}
+$("closeModal").onclick=$("cancelModal").onclick=closeModal;$("saveModal").onclick=()=>{if(modalSave())closeModal()};
+function questionModal(q={}){
+ let editing=q.id!==undefined;openModal(editing?"Update question":"Add question",`<div class="formgrid">
+ <label>LeetCode ID<input class="field" id="fId" type="number" value="${esc(q.id??"")}" required></label>
+ <label>Question title<input class="field" id="fTitle" value="${esc(q.title??"")}" required></label>
+ <label>Difficulty<select class="field" id="fDiff">${["Easy","Medium","Hard"].map(x=>`<option ${q.difficulty===x?"selected":""}>${x}</option>`).join("")}</select></label>
+ <label>Roadmap phase<select class="field" id="fPhase">${PHASES.map((x,i)=>`<option value="${i}" ${+q.phase===i?"selected":""}>${i} · ${esc(x[0])}</option>`).join("")}</select></label>
+ <label class="wide">Direct URL<input class="field" id="fUrl" value="${esc(q.url??"")}"></label>
+ <label class="wide">Concepts<input class="field" id="fConcepts" value="${esc(q.concepts??"")}" placeholder="e.g. LEFT JOIN, GROUP BY"></label>
+ <label>Status<select class="field" id="fStatus">${["Not started","Attempted","Solved","Mastered"].map(x=>`<option ${q.status===x?"selected":""}>${x}</option>`).join("")}</select></label>
+ <label>Attempts<input class="field" id="fAttempts" type="number" min="0" value="${esc(q.attempts??0)}"></label>
+ <label>Confidence (0–5)<input class="field" id="fConfidence" type="number" min="0" max="5" value="${esc(q.confidence??0)}"></label>
+ <label class="wide">Notes / mistake log<textarea class="field" id="fNotes">${esc(q.notes??"")}</textarea></label></div>`,()=>{
+ let id=+$("fId").value,title=$("fTitle").value.trim();if(!id||!title){alert("Enter a question ID and title.");return false}
+ let obj={id,title,url:$("fUrl").value.trim()||`https://leetcode.com/problems/${slug(title)}/`,difficulty:$("fDiff").value,phase:+$("fPhase").value,concepts:$("fConcepts").value,status:$("fStatus").value,attempts:+$("fAttempts").value||0,confidence:Math.min(5,Math.max(0,+$("fConfidence").value||0)),notes:$("fNotes").value};
+ let idx=state.questions.findIndex(x=>+x.id===id);if(idx>=0)state.questions[idx]=obj;else state.questions.push(obj);save();return true
+ });
+}
+function logModal(){openModal("Log a study session",`<div class="formgrid"><label>Date<input class="field" id="lDate" type="date" value="${new Date().toISOString().slice(0,10)}"></label><label>Minutes studied<input class="field" id="lMin" type="number" min="1" value="45"></label><label class="wide">Focus / concepts<input class="field" id="lFocus" placeholder="e.g. LEFT JOIN and NULL handling"></label><label class="wide">What went well / learned<textarea class="field" id="lWin"></textarea></label><label class="wide">Next action<textarea class="field" id="lNext"></textarea></label></div>`,()=>{let minutes=+$("lMin").value;if(minutes<=0)return false;state.logs.push({date:$("lDate").value,minutes,focus:$("lFocus").value,win:$("lWin").value,next:$("lNext").value});save();return true})}
+$("addQuestion").onclick=()=>questionModal();$("quickLog").onclick=$("newLog").onclick=logModal;
+["qSearch","qDiff","qStatus","qPhase"].forEach(id=>$(id).addEventListener("input",renderQuestions));
+$("editSkills").onclick=()=>openModal("Update skill self-assessment",`<p class="muted small">Rate your current practical ability from 1 (new) to 5 (confident and independent).</p><div class="formgrid">${state.skills.map((s,i)=>`<label>${esc(s.name)}<select class="field" id="skill${i}">${[1,2,3,4,5].map(n=>`<option ${s.value===n?"selected":""}>${n}</option>`).join("")}</select></label>`).join("")}</div>`,()=>{state.skills.forEach((s,i)=>s.value=+$("skill"+i).value);save();return true});
+$("addGoal").onclick=()=>openModal("Add development goal",`<label class="small">Goal title<input class="field" id="goalTitle" placeholder="e.g. Explain window frames confidently"></label>`,()=>{let t=$("goalTitle").value.trim();if(!t)return false;state.goals.push({title:t,done:false});save();return true});
+$("addPhaseTask").onclick=()=>openModal("Add a learning item",`<label class="small">Choose phase<select class="field" id="taskPhase">${PHASES.map((p,i)=>`<option value="${i}">${i} · ${esc(p[0])}</option>`).join("")}</select></label><label class="small">Learning item<input class="field" id="taskName" placeholder="e.g. Window frame boundaries"></label>`,()=>{let i=+$("taskPhase").value,t=$("taskName").value.trim();if(!t)return false;PHASES[i][2].push(t);save();return true});
+$("saveTarget").onclick=()=>{state.target=Math.max(1,+$("targetInput").value||310);save();alert("Target saved.")};
+$("exportData").onclick=()=>{let blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});download(blob,"sql-learning-backup.json")};
+function download(blob,name){let a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;a.click();URL.revokeObjectURL(a.href)}
+$("importDataBtn").onclick=()=>$("importDataFile").click();
+$("importDataFile").onchange=async e=>{try{let x=JSON.parse(await e.target.files[0].text());if(!x||!Array.isArray(x.questions))throw Error();state={...fresh(),...x};save();alert("Backup imported.")}catch(err){alert("Could not read this backup JSON.")}e.target.value=""};
+$("importQuestionsBtn").onclick=()=>$("importQuestionsFile").click();
+$("importQuestionsFile").onchange=async e=>{try{let file=e.target.files[0],txt=await file.text(),arr;if(file.name.toLowerCase().endsWith(".json"))arr=JSON.parse(txt);else{let lines=txt.trim().split(/\r?\n/),heads=lines.shift().split(",").map(x=>x.trim());arr=lines.map(line=>{let vals=line.match(/("([^"]|"")*"|[^,]*)(,|$)/g)||[];let o={};heads.forEach((h,i)=>o[h]=(vals[i]||"").replace(/,$/,"").replace(/^"|"$/g,"").replace(/""/g,'"'));return o})}
+ if(!Array.isArray(arr))throw Error();let mapped=arr.map(q=>({id:+q.id,title:q.title||q.name||"",url:q.url||q.link||"",difficulty:q.difficulty||"Easy",phase:Number.isFinite(+q.phase)?+q.phase:0,concepts:q.concepts||q.primary_concept||"",status:q.status||"Not started",attempts:+q.attempts||0,confidence:+q.confidence||0,notes:q.notes||""})).filter(q=>q.id&&q.title);let map=new Map(state.questions.map(q=>[+q.id,q]));mapped.forEach(q=>map.set(+q.id,q));state.questions=[...map.values()];save();alert(`Imported or updated ${mapped.length} questions.`)
+ }catch(err){alert("Import failed. Check that the file is a valid CSV or JSON array.")}e.target.value=""};
+$("resetData").onclick=()=>{if(confirm("Delete all dashboard data from this browser? Export a backup first if needed.")){state=fresh();save()}};
+render();
+</script>
+</body>
+</html>
